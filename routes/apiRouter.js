@@ -1,5 +1,5 @@
 var express = require('express');
-var instagram = require('../apis/instagram');
+var instagram = require('../api/instagram');
 var router = express.Router();
 
 // GET photo data based on POSTed map coordinates
