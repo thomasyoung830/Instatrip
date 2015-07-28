@@ -26,6 +26,20 @@ var get_map_route = function(start, end) {
   });
 };
 
+var choose_points = function(steps, num_points) {
+  var result = [];
+  num_points = (num_points === undefined) ? 4 : num_points;
+
+  var interval = Math.floor(steps.length / num_points);
+
+  for(var i = 0; i < steps.length; i += interval) {
+    result.push(steps[i]);
+  }
+
+  return result;
+};
+
 module.exports = {
-  get_map_route: get_map_route
+  get_map_route: get_map_route,
+  choose_points: choose_points
 };
