@@ -28,7 +28,7 @@ var get_map_route = function(start, end) {
 
 var choose_points = function(steps, num_points) {
   var result = [];
-  num_points = (num_points === undefined) ? 4 : num_points;
+  num_points = (num_points === undefined) ? 4 : Math.min(num_points, steps.length);
 
   var interval = Math.floor(steps.length / num_points);
 
