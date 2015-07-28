@@ -26,6 +26,12 @@ var get_map_route = function(start, end) {
   });
 };
 
+/**
+ * Takes an array of steps and picks points along the route
+ * @param  {Array} steps      Array of steps from Google Directions route
+ * @param  {Integer} num_points The number of points to pick
+ * @return {Array}            Array of selected points
+ */
 var choose_points = function(steps, num_points) {
   var result = [];
   num_points = (num_points === undefined) ? 4 : Math.min(num_points, steps.length);
