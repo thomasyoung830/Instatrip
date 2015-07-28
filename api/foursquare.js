@@ -2,6 +2,7 @@
  * @module foursquare
  */
 
+var Promise = require('bluebird');
 var request = require('request-promise');
 
 var keys = require('../config.js');
@@ -21,7 +22,7 @@ var get_foursquare_data_for_coord = function(coords) {
       'client_id': keys.FOURSQUARE_ID,
       'client_secret': keys.FOURSQUARE_SECRET,
       'll': coords.join(','),
-      'radius': 250,
+      'radius': 300,
       // 'query': 'bar',
       'section': 'drinks',
       'limit': 15,
@@ -41,6 +42,17 @@ var get_foursquare_data_for_coord = function(coords) {
   });
 };
 
+var get_foursquare_data_for_array_of_points = function(points) {
+  var calls = [];
+
+  points.forEach(function(point) {
+    calls.push(get_foursquare_data_for_coord([point.end_location.lat, point.end_location.lng]));
+  });
+
+  return Promise.all(calls);
+};
+
 module.exports = {
-  get_foursquare_data_for_coord: get_foursquare_data_for_coord
+  get_foursquare_data_for_coord: get_foursquare_data_for_coord,
+  get_foursquare_data_for_array_of_points: get_foursquare_data_for_array_of_points
 };
