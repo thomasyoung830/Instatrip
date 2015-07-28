@@ -1,7 +1,7 @@
 var instagram = require('instagram-node-lib');
 var keys = require('../config.js');
-instagram.set('client_id', keys.InstaClientID);
-instagram.set('client_secret', keys.InstaClientSecret);
+instagram.set('client_id', keys.INSTAGRAM_ID);
+instagram.set('client_secret', keys.INSTAGRAM_SECRET);
 
 module.exports = {
 
