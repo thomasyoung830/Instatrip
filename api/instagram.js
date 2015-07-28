@@ -6,9 +6,13 @@ instagram.set('client_secret', keys.INSTAGRAM_SECRET);
 module.exports = {
 
   getInstaData : function(latitude, longitude, distance, callback){
-    instagram.media.search({lat: latitude, lng: longitude, distance: distance, complete: function(data){
-      callback(data);
-    }});
+    instagram.media.search({lat: latitude, lng: longitude, distance: distance, 
+      complete: function(data){
+        callback(data);
+      },error: function(errorMessage, errorObject, caller){
+        console.log(errorMessage);
+      }
+    });
   },
 
   sortInstaData: function(photos, coords){
@@ -29,10 +33,11 @@ module.exports = {
         return photos;
   },
 
+  // this gets called first, with 'sendResponse' as the callback.
   // call to instagram for each coordinate set and return to client
   obtainInstaData : function(coords, callback){
     var results = [];
-    var lat, lng, dist = 300; // dist unit: m, max: 5000m
+    var lat, lng, dist = 300; // dist unit: m, max: 5000m --- distance around lat+lng to look for photos
 
     // parse instagram data object
     var photoParser =  function(data){
@@ -53,6 +58,7 @@ module.exports = {
       }
     };
 
+    // for each coordinate, get an array of photo objects
     for (var i = 0; i < coords.length; i++){
       lat = coords[i].lat;
       lng = coords[i].lng;
