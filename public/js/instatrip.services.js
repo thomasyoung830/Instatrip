@@ -46,7 +46,7 @@ angular.module('instatrip.services', [])
         }
       var nPts = findN(response.routes[0].overview_path, points);
       var coords = [];
-      console.log("Welcome to Team Kraken's InstaTrip!")
+      console.log("Welcome to Team Kraken's InstaTrip!");
       for(var i = 0; i < nPts.length; i++){
         coords.push({
           lat: nPts[i].A,
@@ -84,7 +84,53 @@ angular.module('instatrip.services', [])
       return getPhoto({
         coords: coords
       });
+    }
+
+        // TESTING
+    var locMark = function(data) {
+      markers = [];
+
+      var makeMarker = function(data, id) {
+        var myLatlng = new google.maps.LatLng(data.coordinates.lat, data.coordinates.lng);
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          id: id
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          console.log(marker.id);
+        });
+
+        return marker;
+      };
+
+      for(var i = 0; i < data.length; i++) {
+        var newMarker = makeMarker(data[i], i);
+        markers.push(newMarker);
+      }
+
+      for(i = 0; i < data.length; i++) {
+        markers[i].setMap(Map);
+      }
     };
+
+    var getLocs = function(start, end) {
+        var imgHolder = [];
+      var linkHolder = {};
+      return $http({
+        method: 'POST',
+        url: "/search",
+        data: {
+          start: start,
+          end: end
+        }
+      }).then(function(resp){
+        console.log(resp.data);
+        locMark(resp.data);
+      });
+    };
+
+    getLocs(start, end);
 
   };
 
