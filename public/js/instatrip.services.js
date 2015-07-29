@@ -54,7 +54,7 @@ angular.module('instatrip.services', [])
       }
         currentCoords = coords;
 
-        callback(response.routes[0].overview_path, coords);
+        // callback(response.routes[0].overview_path, coords);
       });
     }
 
