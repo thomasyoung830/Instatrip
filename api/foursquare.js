@@ -9,7 +9,7 @@ var keys = require('../config.js');
 
 
 /**
- * Finds bars within 250m of a coordinate
+ * Finds bars within 300m of a coordinate
  * @param  {Array} coords [latitude, longitude]
  * @return {Promise.<Array>}        Array of bars sorted by rating
  */
