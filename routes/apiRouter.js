@@ -1,14 +1,36 @@
+var foursquare = require('../api/foursquare');
+var maps = require('../api/maps');
 var express = require('express');
-var instagram = require('../api/instagram');
 var router = express.Router();
 
-// GET photo data based on POSTed map coordinates
 router.post('/', function(req, res) {
-  var coords = req.body.coords;
-  var responder = function(data){
-    res.send(JSON.stringify(data));
-  };
-  instagram.obtainInstaData(coords, responder);
+  var start = req.body.start;
+  var end = req.body.end;
+
+  maps.get_map_route(start, end).then(function(route) {
+    var steps = route.routes[0].legs[0].steps;
+    var points = maps.choose_points(steps);
+
+    return foursquare.get_foursquare_data_for_array_of_points(points);
+  }).then(function(data) {
+    var venue_ids = {};
+    res.json(data.map(function(venues) {
+      for(var i = 0; i < venues.length; i++) {
+        if (venue_ids[venues[i].venue.id]) {
+          continue;
+        }
+        venue_ids[venues[i].venue.id] = true;
+        return {
+          'name': venues[i].venue.name,
+          'coordinates': {
+            'lat': venues[i].venue.location.lat,
+            'lng': venues[i].venue.location.lng
+          },
+          'address': venues[i].venue.location.formattedAddress.join(' ')
+        };
+      }
+    }));
+  });
 });
 
 module.exports = router;
