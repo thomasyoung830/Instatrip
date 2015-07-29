@@ -23,8 +23,8 @@ var get_foursquare_data_for_coord = function(coords) {
       'client_secret': keys.FOURSQUARE_SECRET,
       'll': coords.join(','),
       'radius': 300,
-      // 'query': 'bar',
-      'section': 'drinks',
+      'query': 'bar',
+      // 'section': 'drinks',
       'limit': 15,
       'openNow': 0
     },
