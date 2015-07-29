@@ -33,7 +33,8 @@ router.post('/', function(req, res) {
             'lat': venues[i].venue.location.lat,
             'lng': venues[i].venue.location.lng
           },
-          'address': venues[i].venue.location.formattedAddress.join(' ')
+          'address': venues[i].venue.location.formattedAddress.join(' '),
+          'foursquare_v2_id': venues[i].venue.id
         };
       }
     });
