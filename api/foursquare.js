@@ -30,7 +30,9 @@ var get_foursquare_data_for_coord = function(coords) {
     },
     'json': true
   }).then(function(res) {
-    return res.response.groups[0].items.sort(function(a, b) {
+    return res.response.groups[0].items.filter(function(obj) {
+      return obj.venue.rating !== undefined;
+    }).sort(function(a, b) {
       if (a.venue.rating > b.venue.rating) {
         return -1;
       } else if (a.venue.rating < b.venue.rating) {
