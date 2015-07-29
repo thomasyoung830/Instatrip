@@ -7,6 +7,10 @@ router.post('/', function(req, res) {
   var start = req.body.start;
   var end = req.body.end;
 
+  if (!start || !end) {
+    res.status(400).send();
+  }
+
   maps.get_map_route(start, end).then(function(route) {
     var steps = route.routes[0].legs[0].steps;
     var points = maps.choose_points(steps);
