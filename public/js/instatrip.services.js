@@ -93,11 +93,15 @@ angular.module('instatrip.services', [])
         var myLatlng = new google.maps.LatLng(data.coordinates.lat, data.coordinates.lng);
         var marker = new google.maps.Marker({
           position: myLatlng,
-          id: id
+          id: id,
+          photos: data.photos
         });
 
         google.maps.event.addListener(marker, 'click', function() {
-          console.log(marker.id);
+          currentImages = [];
+          console.log(marker.id, marker.photos);
+          currentImages = marker.photos;
+          $state.go('display.pics');
         });
 
         return marker;
@@ -194,7 +198,6 @@ angular.module('instatrip.services', [])
 
   var getImages = function(){
     return currentImages;
-
   };
 
   return {
