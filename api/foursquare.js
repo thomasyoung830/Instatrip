@@ -26,7 +26,7 @@ var get_foursquare_data_for_coord = function(coords) {
       // 'query': 'bar',
       'section': 'drinks',
       'limit': 15,
-      'openNow': 1
+      'openNow': 0
     },
     'json': true
   }).then(function(res) {
