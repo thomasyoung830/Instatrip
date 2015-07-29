@@ -172,9 +172,10 @@ angular.module('instatrip.services', [])
     return $http({
       method: 'POST',
       url: "/search",
-      data: routes
+      data: {start:"611 Mission Street, San Francisco, CA, United States", end:"25 Rausch Street, San Francisco, CA, United States"}
 
     }).then(function(resp){
+      console.log('get photo resp: ', resp);
       var respLength = resp.data.length;
       for(var i = 0; i < respLength; i++){
         for (var j = 0; j < resp.data[i].length; j++){

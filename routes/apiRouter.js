@@ -1,4 +1,5 @@
 var foursquare = require('../api/foursquare');
+var instagram = require('../api/instagram');
 var maps = require('../api/maps');
 var express = require('express');
 var router = express.Router();
@@ -19,7 +20,7 @@ router.post('/', function(req, res) {
   }).then(function(data) {
     var venue_ids = {};
 
-    var results = data.map(function(venues) {
+    var fourSquareData = data.map(function(venues) {
       for(var i = 0; i < venues.length; i++) {
         if (venue_ids[venues[i].venue.id]) {
           continue;
@@ -38,8 +39,18 @@ router.post('/', function(req, res) {
         };
       }
     });
+    console.log("data from 4square", fourSquareData);
+    return fourSquareData;
 
-    res.json(results);
+  }).then(function(data){
+    console.log('right before calling instagram with: ', data);
+    data = [ { name: 'Justice Urban Tavern',
+    coordinates: { lat: 34.05124604421524, lng: -118.2423198223114 },
+    address: '120 S Los Angeles St (1st St.) Los Angeles, CA 90012 United States' }];
+    instagram.obtainInstaData(data).then(function(resData){
+      console.log('before sending response Data: ', resData);
+      res.json(resData);
+    });
   });
 });
 
