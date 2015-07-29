@@ -45,7 +45,7 @@ var get_foursquare_data_for_coord = function(coords) {
 /**
  * Takes an array of coordinates and fetches nearby bars from for
  * @param  {Array} points [[latitude, longitude],...]
- * @return {Promise.<Array>} Array of {@link foursquare:get_foursquare_data_for_coord}
+ * @return {Promise.<Array>} Array of {@link module:foursquare~get_foursquare_data_for_coord}
  */
 var get_foursquare_data_for_array_of_points = function(points) {
   var calls = [];

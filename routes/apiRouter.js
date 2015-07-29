@@ -14,12 +14,15 @@ router.post('/', function(req, res) {
     return foursquare.get_foursquare_data_for_array_of_points(points);
   }).then(function(data) {
     var venue_ids = {};
-    res.json(data.map(function(venues) {
+
+    var results = data.map(function(venues) {
       for(var i = 0; i < venues.length; i++) {
         if (venue_ids[venues[i].venue.id]) {
           continue;
         }
+
         venue_ids[venues[i].venue.id] = true;
+
         return {
           'name': venues[i].venue.name,
           'coordinates': {
@@ -29,7 +32,9 @@ router.post('/', function(req, res) {
           'address': venues[i].venue.location.formattedAddress.join(' ')
         };
       }
-    }));
+    });
+
+    res.json(results);
   });
 });
 
