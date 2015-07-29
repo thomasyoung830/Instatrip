@@ -42,11 +42,16 @@ var get_foursquare_data_for_coord = function(coords) {
   });
 };
 
+/**
+ * Takes an array of coordinates and fetches nearby bars from for
+ * @param  {Array} points [[latitude, longitude],...]
+ * @return {Promise.<Array>} Array of {@link foursquare:get_foursquare_data_for_coord}
+ */
 var get_foursquare_data_for_array_of_points = function(points) {
   var calls = [];
 
   points.forEach(function(point) {
-    calls.push(get_foursquare_data_for_coord([point.end_location.lat, point.end_location.lng]));
+    calls.push(get_foursquare_data_for_coord([point[0], point[1]]));
   });
 
   return Promise.all(calls);

@@ -39,7 +39,10 @@ var choose_points = function(steps, num_points) {
   var interval = Math.floor(steps.length / num_points);
 
   for(var i = 0; i < steps.length; i += interval) {
-    result.push(steps[i]);
+    result.push([steps[i].start_location.lat, steps[i].start_location.lng]);
+    if (result.length === num_points) {
+      break;
+    }
   }
 
   return result;
