@@ -95,11 +95,11 @@ angular.module('instatrip.services', [])
       markers = [];
 
       var makeMarker = function(data, id) {
-        var myLatlng = new google.maps.LatLng(data.coordinates.lat, data.coordinates.lng);
+        console.log(data);
+        var myLatlng = new google.maps.LatLng(data.location.latitude, data.location.longitude);
 
         var contentString = '<div id="content">' +
-        '<h3>' + data.name + '</h3>' +
-        '<p>' + data.address + '</p>' +
+        '<h3>' + data.barName + '</h3>' +
         '</div>';
 
         // This is what will display above the marker when clicked
