@@ -6,29 +6,16 @@ instagram.set('client_secret', keys.INSTAGRAM_SECRET);
 
 
 
-// var getInstaDataByCoords = function(barName, coords, latitude, longitude, distance){
-//   return new Promise(function(resolve, reject){
-//     instagram.media.search({lat: latitude, lng: longitude, distance: distance, 
-//       complete: function(data){
-//         // 'data' is an array of photo-objects for a specific coordinate
-//         // 
-//         resolve({barName:barName, coords: coords, data: data});
-//         // callback(barName, coords, data);
-//       },error: function(errorMessage, errorObject, caller){
-//         reject(errorMessage);
-//         // console.log(errorMessage);
-//       }
-//     });
-//   });
-// };
-
+/**
+* Gets instagram photos tagged with a specific location.
+* Searches by instagram-location-ID
+*/
 var getInstaDataById = function(locationId, barName, coords, lat, lng ){
   return new Promise(function(resolve, reject){
     instagram.locations.recent({ location_id: locationId, 
-    complete: function(data){
+      complete: function(data){
         // 'data' is an array of photo-objects for a specific location
         resolve({barName:barName, lat: lat, lng: lng, data: data});
-        // callback(barName, coords, data);
       },error: function(errorMessage, errorObject, caller){
         reject(errorMessage);
         // console.log(errorMessage);
@@ -39,6 +26,9 @@ var getInstaDataById = function(locationId, barName, coords, lat, lng ){
 
 
 
+/**
+* Gets instagram location info based on foursquare ID
+*/
 var getInstaLocation = function(foursquareId, barName, coords, lat, lng, dist){
   return new Promise(function(resolve, reject){
     instagram.locations.search({ foursquare_v2_id: foursquareId, 
@@ -62,27 +52,9 @@ var getInstaLocation = function(foursquareId, barName, coords, lat, lng, dist){
 
 
 
-var sortInstaData = function(barObjArray, coords){
-  var origin = coords[0];
-  var destination = coords[coords.length -1];
-
-  // Sort photos based on longitude and direction of travel
-  if (origin.lng > destination.lng){
-    barObjArray.sort(function(a, b){
-      return b.location.longitude - a.location.longitude;
-    });
-  } else {
-    barObjArray.sort(function(a, b){
-      return a.location.longitude - b.location.longitude;
-    });
-  }
-
-  return barObjArray;
-};
-
-
-
-// parse instagram data object
+/**
+* Format instagram data object to send back to client
+*/
 var photoParser = function(barName, lat, lng, photoObjArr){
   var results = [];
   var locationPhotoObj = { barName: barName, location: {latitude: lat, longitude: lng}, photos: [] };
@@ -92,28 +64,24 @@ var photoParser = function(barName, lat, lng, photoObjArr){
       url: photoObjArr[i].images.low_resolution.url
     });
   }
-  // results.push(locationPhotoObj);
+
   return locationPhotoObj;
 
-
-  // // check if all api calls have been processed, sort, return to client
-  // if (results.length === coords.length){
-  //   results = sortInstaData(results, coords);
-  //   console.log('first result Obj ', results[0]);
-  //   callback(results);
-  // }
 };
 
-// this gets called first, with 'sendResponse' as the callback.
-// call to instagram for each coordinate set and return to client.
+
+
+/**
+* This gets called first
+* Recieves array of locations' data
+*/
+
 var obtainInstaData = function(instaData){
   return new Promise(function(resolve, reject){
   
     var lat, lng, dist, barName, foursquare_v2_id = 300; // dist unit: m, max: 5000m --- distance around lat+lng to look for photos
 
     var instaLocationPromiseArr = [];
-    // 447bf8f1f964a520ec331fe3
-    // promiseResultsArr.push(getInstaLocation('447bf8f1f964a520ec331fe3'));
 
     // get the instagram id of each location based on the foursquare id
     for (var i = 0; i < instaData.length; i++){
@@ -140,7 +108,7 @@ var obtainInstaData = function(instaData){
       }
 
       return Promise.all( instaDataPromiseArr );
-
+      // once all promises are resolved, format the data for each location to send to client
     }).then(function(resultsArr){
       var parsedResultsArr = [];
 
@@ -158,39 +126,12 @@ var obtainInstaData = function(instaData){
 
     });
 
-
-    // var promiseResultsArr = [];
-
-    // // for each coordinate, get an array of photo objects
-    // for (var i = 0; i < coords.length; i++){
-    //   foursquare_v2_id = coords[i].foursquare_v2_id;
-    //   barName = coords[i].name;
-    //   lat = coords[i].coordinates.lat;
-    //   lng = coords[i].coordinates.lng;
-
-    //   promiseResultsArr.push( getInstaDataByCoords(barName, coords, lat, lng, dist) );
-    // }
-
-    // // waits for all promises in 'promiseResultsArr' to finish before calling 'then'
-    // Promise.all(promiseResultsArr).then(function(resultsArr){
-    //   var parsedResultsArr = [];
-
-    //   for(var i = 0; i < resultsArr.length; i++){
-    //     var barName = resultsArr[i].barName;
-    //     var coords = resultsArr[i].coords;
-    //     var data = resultsArr[i].data;
-    //     parsedResultsArr.push( photoParser(barName, coords, data) );
-    //   }
-    //   console.log('parsedResultsArr is: ', JSON.stringify(parsedResultsArr));
-    //   resolve(parsedResultsArr);
-
-    // });
-
-
   });
 };
+
 
 
 module.exports = {
   obtainInstaData: obtainInstaData
 };
+
