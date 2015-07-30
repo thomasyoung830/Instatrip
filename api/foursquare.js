@@ -33,17 +33,42 @@ var get_foursquare_data_for_coord = function(coords) {
     },
     'json': true
   }).then(function(res) {
-    return res.response.groups[0].items.filter(function(obj) {
-      return (obj.venue.rating !== undefined || obj.venue.categories[0].id !== '4bf58dd8d48988d1d5941735');
-    }).sort(function(a, b) {
-      if (a.venue.rating > b.venue.rating) {
-        return -1;
-      } else if (a.venue.rating < b.venue.rating) {
-        return 1;
-      } else {
-        return 0;
-      }
+    var data = res.response.groups[0].items;
+
+    data = data.filter(function(obj) {
+      return !(obj.venue.categories[0].id in {
+        '4bf58dd8d48988d1d5941735': 'Hotel Bars',
+        '4bf58dd8d48988d119941735': 'Hookah Bar'
+      });
     });
+
+    var with_ratings = data.filter(function(obj) {
+      return obj.venue.rating !== undefined;
+    });
+
+    if (with_ratings.length) {
+      data = with_ratings.sort(function(a, b) {
+        if (a.venue.rating > b.venue.rating) {
+          return -1;
+        } else if (a.venue.rating < b.venue.rating) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    } else {
+      data = data.sort(function(a, b) {
+        if (a.venue.stats.checkinscount > b.venue.stats.checkinscount) {
+          return 1;
+        } else if (a.venue.stats.checkinscount < b.venue.stats.checkinscount) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
+
+    return data;
   });
 };
 
