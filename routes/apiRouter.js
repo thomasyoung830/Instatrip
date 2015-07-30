@@ -12,8 +12,8 @@ router.post('/', function(req, res) {
   }
 
   maps.get_map_route(start, end).then(function(route) {
-    var steps = route.routes[0].legs[0].steps;
-    var points = maps.choose_points(steps);
+    var leg = route.routes[0].legs[0];
+    var points = maps.choose_points(leg);
 
     return foursquare.get_foursquare_data_for_array_of_points(points);
   }).then(function(data) {
