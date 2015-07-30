@@ -213,3 +213,13 @@ body {
 .testing {
   width: 140%;
 }
+
+.marker {
+  background-color: #59BCB9;
+}
+
+.marker .marker-title {
+  text-align: center;
+  background: #fff;
+  font-size: 12pt;
+}
