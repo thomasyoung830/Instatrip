@@ -38,16 +38,14 @@ var choose_points = function(route, num_points) {
   num_points = (num_points === undefined) ? 4 : num_points;
 
   // Determine the distance between points
-  var interval;
   if (route.distance.value < 100) {
     // You're walking across the street just look around
     return [];
-  /*} else if (route.distance.value <= 300) {
-    num_points = 1;
-    interval = 150;*/
-  } else {
-    interval = Math.round(route.distance.value / (num_points + 1));
+  } else if (route.distance.value / 300 < num_points) {
+    num_points = Math.max(1, Math.floor(route.distance.value / 300));
   }
+
+  var interval = Math.round(route.distance.value / (num_points + 1));
 
   var done = false, i = 0,
     // The distance traveled so far
