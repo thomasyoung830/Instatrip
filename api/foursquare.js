@@ -25,15 +25,16 @@ var get_foursquare_data_for_coord = function(coords) {
       'client_secret': keys.FOURSQUARE_SECRET,
       'll': coords.join(','),
       'radius': 300,
-      'query': 'bar',
-      // 'section': 'drinks',
+      'categoryId': '4bf58dd8d48988d116941735',
+      // 'query': 'bar',
+      'section': 'drinks',
       'limit': 15,
       'openNow': 0
     },
     'json': true
   }).then(function(res) {
     return res.response.groups[0].items.filter(function(obj) {
-      return obj.venue.rating !== undefined;
+      return (obj.venue.rating !== undefined || obj.venue.categories[0].id !== '4bf58dd8d48988d1d5941735');
     }).sort(function(a, b) {
       if (a.venue.rating > b.venue.rating) {
         return -1;
