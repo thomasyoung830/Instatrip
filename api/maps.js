@@ -46,7 +46,7 @@ var choose_points = function(route, num_points) {
     num_points = 1;
     interval = 150;*/
   } else {
-    interval = route.distance.value / num_points;
+    interval = Math.round(route.distance.value / (num_points + 1));
   }
 
   var done = false, i = 0,
@@ -61,7 +61,7 @@ var choose_points = function(route, num_points) {
 
   while (!done) {
     // Meters until next point
-    var distance_until_next_stop = interval - (running_distance - last_stop);
+    var distance_until_next_stop = Math.round(interval - (running_distance - last_stop));
 
     // check if distance traveled along current step is > the distance until the next point
     if (step.distance.value - step_running_distance > distance_until_next_stop) {
@@ -93,7 +93,7 @@ var choose_points = function(route, num_points) {
     }
 
     // Check if we've traveled along the whole route
-    if (running_distance >= route.distance.value) {
+    if (running_distance >= route.distance.value || result.length === num_points || step === undefined) {
       done = true;
     }
   }
