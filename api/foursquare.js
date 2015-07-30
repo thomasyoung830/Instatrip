@@ -9,7 +9,7 @@ var keys = require('../config.js');
 
 
 /**
- * Finds bars within 250m of a coordinate
+ * Finds bars within 300m of a coordinate
  * @param  {Array} coords [latitude, longitude]
  * @return {Promise.<Array>}        Array of bars sorted by rating
  */
@@ -23,14 +23,16 @@ var get_foursquare_data_for_coord = function(coords) {
       'client_secret': keys.FOURSQUARE_SECRET,
       'll': coords.join(','),
       'radius': 300,
-      // 'query': 'bar',
-      'section': 'drinks',
+      'query': 'bar',
+      // 'section': 'drinks',
       'limit': 15,
       'openNow': 0
     },
     'json': true
   }).then(function(res) {
-    return res.response.groups[0].items.sort(function(a, b) {
+    return res.response.groups[0].items.filter(function(obj) {
+      return obj.venue.rating !== undefined;
+    }).sort(function(a, b) {
       if (a.venue.rating > b.venue.rating) {
         return -1;
       } else if (a.venue.rating < b.venue.rating) {
