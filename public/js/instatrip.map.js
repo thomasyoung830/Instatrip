@@ -6,7 +6,8 @@ function mapCtrl ($scope, Getdata, $rootScope){
   function randomIntFromInterval(min,max){
       return Math.floor(Math.random()*(max-min+1)+min);
   }
-
+  
+  // randomly add drunken-blur effect
   function setRandomInterval(){
     var bodyEl = angular.element( document.querySelector( 'body' ) );
     setTimeout(function(){
@@ -19,15 +20,6 @@ function mapCtrl ($scope, Getdata, $rootScope){
   }
 
   setRandomInterval();
-  // setInterval(function(){
-  //   var bodyEl = angular.element( document.querySelector( 'body' ) );
-  //   bodyEl.addClass('youreDrunk');
-  //   setTimeout(function(){
-  //     bodyEl.removeClass('youreDrunk');
-  //   }, 1500);
-    
-  // }, 10000);
-  
 
   $scope.getmap = Getdata.getmap;
 
