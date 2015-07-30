@@ -2,6 +2,18 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: center;
+  -webkit-filter: blur(0px);
+  -moz-filter: blur(0px);
+  -o-filter: blur(0px);
+  -ms-filter: blur(0px);
+  filter: blur(0px);
+  /*transition-blur*/
+  transition: 1.5s filter ease-in-out, 1.5s transform ease-in-out;
+  -webkit-transition: 1.5s -webkit-filter ease-in-out, 1.5s -webkit-transform ease-in-out;
+  -moz-transition: 1.5s -moz-filter ease-in-out, 1.5s -moz-transform ease-in-out;
+  -ms-transition: 1.5s -ms-filter ease-in-out, 1.5s -ms-transform ease-in-out;
+  -o-transition: 1.5s -o-filter ease-in-out, 1.5s -o-transform ease-in-out;
+
 }
 #startInput{
   width: 400px;
@@ -222,4 +234,14 @@ body {
   text-align: center;
   background: #fff;
   font-size: 12pt;
+}
+
+.youreDrunk{
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+  -webkit-transform: rotate(1deg);
+          transform: rotate(1deg);
 }
