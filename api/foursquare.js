@@ -10,7 +10,9 @@ var keys = require('../config.js');
 
 /**
  * Finds bars within 300m of a coordinate
- * @param  {Array} coords [latitude, longitude]
+ * @param  {Array} coords
+ * @param {Float} coords.0 Latitude
+ * @param {Float} coords.1 Longitude
  * @return {Promise.<Array>}        Array of bars sorted by rating
  */
 var get_foursquare_data_for_coord = function(coords) {
@@ -46,14 +48,16 @@ var get_foursquare_data_for_coord = function(coords) {
 
 /**
  * Takes an array of coordinates and fetches nearby bars from for
- * @param  {Array} points [[latitude, longitude],...]
+ * @param  {Object[]} points
+ * @param {Float} points[].lat Latitude
+ * @param {Float} points[].lng Longitude
  * @return {Promise.<Array>} Array of {@link module:foursquare~get_foursquare_data_for_coord}
  */
 var get_foursquare_data_for_array_of_points = function(points) {
   var calls = [];
 
   points.forEach(function(point) {
-    calls.push(get_foursquare_data_for_coord([point[0], point[1]]));
+    calls.push(get_foursquare_data_for_coord([point.lat, point.lng]));
   });
 
   return Promise.all(calls);
