@@ -14,7 +14,7 @@ angular.module('instatrip.services', [])
 
     var that = this.curImgs;
 
-    travelMethod = travelMethod || 'DRIVING';
+    travelMethod = travelMethod || 'WALKING';
     start = start || 'San Francisco';
     end = end || 'Oakland';
     var trvmthd = travelMethod;
