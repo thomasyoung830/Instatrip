@@ -39,6 +39,12 @@ router.post('/', function(req, res) {
         };
       }
     });
+
+    // filter out results with 'undefined'
+    fourSquareData = fourSquareData.filter(function(location){
+      return location !== undefined;
+    });
+
     console.log("data from 4square", fourSquareData);
     return fourSquareData;
 
