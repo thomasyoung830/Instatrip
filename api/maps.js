@@ -35,16 +35,11 @@ var get_map_route = function(start, end) {
 var choose_points = function(route, num_points) {
   var steps = route.steps;
   var result = [];
-  num_points = (num_points === undefined) ? 4 : num_points;
+
+  // Determine the number of points
+  num_points = num_points || Math.max(1, Math.floor(route.distance.value / 300));
 
   // Determine the distance between points
-  if (route.distance.value < 100) {
-    // You're walking across the street just look around
-    return [];
-  } else if (route.distance.value / 300 < num_points) {
-    num_points = Math.max(1, Math.floor(route.distance.value / 300));
-  }
-
   var interval = Math.round(route.distance.value / (num_points + 1));
 
   var done = false, i = 0,
