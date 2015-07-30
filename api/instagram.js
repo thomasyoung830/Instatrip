@@ -80,8 +80,8 @@ var photoParser = function(barName, lat, lng, address, photoObjArr){
 var obtainInstaData = function(instaData){
   return new Promise(function(resolve, reject){
   
-    var lat, lng, dist, barName, foursquare_v2_id = 300; // dist unit: m, max: 5000m --- distance around lat+lng to look for photos
-
+    var lat, lng, barName, foursquare_v2_id, address; 
+    var dist = 300; // dist unit: m, max: 5000m --- distance around lat+lng to look for photos
     var instaLocationPromiseArr = [];
 
     // get the instagram id of each location based on the foursquare id
