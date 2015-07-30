@@ -2,12 +2,18 @@ angular.module('instatrip.services', [])
 
 .factory('Getdata', function ($http, $state) {
   var currentImages = [];
+  var activeWindow;
   var currentCoords = [];
   var Map;
   var markers = [];
   var currentMarker;
   var points = 15;
-  var getmap = function(start,end,travelMethod){
+  var getmap = function(start,end,travelMethod) {
+
+    this.curImgs = [];
+
+    var that = this.curImgs;
+
     travelMethod = travelMethod || 'DRIVING';
     start = start || 'San Francisco';
     end = end || 'Oakland';
@@ -85,23 +91,39 @@ angular.module('instatrip.services', [])
       });
     }
 
-        // TESTING
-    var locMark = function(data) {
+    var setMarkers = function(data) {
       markers = [];
 
       var makeMarker = function(data, id) {
         var myLatlng = new google.maps.LatLng(data.coordinates.lat, data.coordinates.lng);
+
+        var contentString = '<div id="content">' +
+        '<h3>' + data.name + '</h3>' +
+        '<p>' + data.address + '</p>' +
+        '</div>';
+
+        // This is what will display above the marker when clicked
+        var infoWindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
         var marker = new google.maps.Marker({
           position: myLatlng,
           id: id,
           photos: data.photos
+          //infoWindow: infoWindow
         });
 
+        // Add the even listener to markers so we know when they're clicked
         google.maps.event.addListener(marker, 'click', function() {
-          currentImages = [];
-          console.log(marker.id, marker.photos);
+          if(activeWindow) {
+            activeWindow.close();
+          }
+          currentImages = []; // empty out currentImages
+          infoWindow.open(map, marker);
+          activeWindow = infoWindow;
           currentImages = marker.photos;
-          $state.go('display.pics');
+          $state.go('display.pics'); // we have to fire off an event for the controller
         });
 
         return marker;
@@ -118,8 +140,6 @@ angular.module('instatrip.services', [])
     };
 
     var getLocs = function(start, end) {
-        var imgHolder = [];
-      var linkHolder = {};
       return $http({
         method: 'POST',
         url: "/search",
@@ -129,13 +149,16 @@ angular.module('instatrip.services', [])
         }
       }).then(function(resp){
         console.log(resp.data);
-        locMark(resp.data);
+        setMarkers(resp.data);
+      })
+      .catch(function(err) {
+        console.log(err);
       });
     };
 
     getLocs(start, end);
 
-  };
+  }; // END OF getmap()
 
   var markMap = function(num) {
     // collect all of the coords/create require objects and put them into markers array
