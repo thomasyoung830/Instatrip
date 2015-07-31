@@ -114,6 +114,10 @@ body {
   text-align: left;
   margin: 2px 0px;
   display: inline;
+  color: #fff;
+  background-color: #8272CC;
+  border-color: transparent;
+  padding: 6px 22px;
 }
 
 .landingButton{
@@ -130,6 +134,12 @@ body {
     border-style: solid;
 }
 
+.btn.focus, .btn:focus, .btn:hover {
+    color: #fff;
+    background-color: #5A4AA5;
+    text-decoration: none;
+}
+
 .landingButton:hover, .landingButton:active, .landingButton:focus, .landingButton:visited{
   background-color: #673AB7;
   border-color: #673AB7;
@@ -137,8 +147,6 @@ body {
 }
 
 .map-title {
-  font-size: 22px;
-  margin: 5px 0px;
   text-align: right;
 }
 
