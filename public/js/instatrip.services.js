@@ -8,6 +8,13 @@ angular.module('instatrip.services', [])
   var markers = [];
   var currentMarker;
   var points = 15;
+  var startCoords = {
+    location: {}
+  };
+  var endCoords = {
+    location: {}
+  };
+
   var getmap = function(start,end,travelMethod) {
 
     this.curImgs = [];
@@ -22,7 +29,7 @@ angular.module('instatrip.services', [])
     var directionsService = new google.maps.DirectionsService();
     var map;
     function initialize() {
-      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
       var MakerSquare = new google.maps.LatLng(37.787518, -122.399868);
       var mapOptions = {
         zoom:7,
@@ -40,14 +47,30 @@ angular.module('instatrip.services', [])
 
     function calcRoute(start, end, travelMethod, callback) {
       var waypoints = []; // these will be waypoints along the way
+      var checkboxArray = document.getElementById('waypoints');
+      if (markers.length > 0) {
+        for (var k = 0; k < markers.length; k++) {
+          waypoints.push({
+            location: new google.maps.LatLng(markers[k].position.G, markers[k].position.K),
+            stopover: true
+          });
+        }
+
+      }
       var request = {
           origin: start,
           destination: end,
+          waypoints: waypoints,
           travelMode: google.maps.TravelMode[travelMethod],
-          unitSystem: google.maps.UnitSystem.IMPERIAL,
+          unitSystem: google.maps.UnitSystem.METRIC
       };
       directionsService.route(request, function(response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
+        if (status === google.maps.DirectionsStatus.OK) {
+          var path = response.routes[0].overview_path;
+          startCoords.location.latitude = path[0].G;
+          startCoords.location.longitude = path[0].K;
+          endCoords.location.latitude = path[path.length-1].G;
+          endCoords.location.longitude = path[path.length-1].K;
           directionsDisplay.setDirections(response);
         }
       var nPts = findN(response.routes[0].overview_path, points);
@@ -59,7 +82,6 @@ angular.module('instatrip.services', [])
         });
       }
         currentCoords = coords;
-
         // callback(response.routes[0].overview_path, coords);
       });
     }
@@ -95,7 +117,6 @@ angular.module('instatrip.services', [])
       markers = [];
 
       var makeMarker = function(data, id) {
-        console.log(data);
         var myLatlng = new google.maps.LatLng(data.location.latitude, data.location.longitude);
 
         var contentString = '<div id="content">' +
@@ -114,7 +135,7 @@ angular.module('instatrip.services', [])
           //infoWindow: infoWindow
         });
 
-        // Add the even listener to markers so we know when they're clicked
+        // Add the event listener to markers so we know when they're clicked
         google.maps.event.addListener(marker, 'click', function() {
           if(activeWindow) {
             activeWindow.close();
@@ -129,14 +150,19 @@ angular.module('instatrip.services', [])
         return marker;
       };
 
+      //this readd the start waypoint
+      markers.push(makeMarker(startCoords, 'start'));
       for(var i = 0; i < data.length; i++) {
         var newMarker = makeMarker(data[i], i);
         markers.push(newMarker);
       }
+      //this readd the end waypoint
+      markers.push(makeMarker(endCoords, 'end'));
 
-      for(i = 0; i < data.length; i++) {
+      for(i = 0; i < markers.length; i++) {
         markers[i].setMap(Map);
       }
+      calcRoute(start, end, travelMethod, ourCallback);
     };
 
     var getLocs = function(start, end) {
@@ -148,7 +174,6 @@ angular.module('instatrip.services', [])
           end: end
         }
       }).then(function(resp){
-        console.log(resp.data);
         setMarkers(resp.data);
       })
       .catch(function(err) {
@@ -202,7 +227,6 @@ angular.module('instatrip.services', [])
       data: {start:"611 Mission Street, San Francisco, CA, United States", end:"25 Rausch Street, San Francisco, CA, United States"}
 
     }).then(function(resp){
-      console.log('get photo resp: ', resp);
       var respLength = resp.data.length;
       for(var i = 0; i < respLength; i++){
         for (var j = 0; j < resp.data[i].length; j++){
