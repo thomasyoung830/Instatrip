@@ -34,14 +34,18 @@ var getInstaLocation = function(foursquareId, barName, coords, lat, lng, address
     instagram.locations.search({ foursquare_v2_id: foursquareId, 
       complete: function(data){
         console.log('instagram location info request data: ', data);
-        resolve({
-          instagramLocationId: data[0].id,
-          barName: barName, 
-          coords: coords, 
-          lat: lat,
-          lng: lng,
-          address: address
-        });
+        if (data.length === 0) {
+          resolve();
+        }else{
+          resolve({
+            instagramLocationId: data[0].id,
+            barName: barName, 
+            coords: coords, 
+            lat: lat,
+            lng: lng,
+            address: address
+          });
+        }
       },error: function(errorMessage, errorObject, caller){
         reject(errorMessage);
         console.log(errorMessage);
@@ -98,6 +102,11 @@ var obtainInstaData = function(instaData){
     // once all promises are resolved, look up photos tagged with each location
     Promise.all( instaLocationPromiseArr ).then(function(resultsArr){
       var instaDataPromiseArr = [];
+
+      // filter out results where instagram did not find a location matching a foursquare ID
+      resultsArr = resultsArr.filter(function(location){
+        return location !== undefined;
+      });
 
       for (var i = 0; i < resultsArr.length; i++){
         var instagramLocationId = resultsArr[i].instagramLocationId;
