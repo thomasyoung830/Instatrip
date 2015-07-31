@@ -11,8 +11,20 @@ instagram.set('client_secret', keys.INSTAGRAM_SECRET);
 * Searches by instagram-location-ID
 */
 var getInstaDataById = function(locationId, barName, coords, lat, lng, address ){
+  var d = new Date();
+  var m = d.getMonth();
+  d.setMonth(d.getMonth() - 12);
+
+  // If still in same month, set date to last day of 
+  // previous month
+  if (d.getMonth() == m) d.setDate(0);
+  d.setHours(0,0,0);
+
+  // Get the time value in milliseconds and convert to seconds
+  var timeStamp = d/1000;
+
   return new Promise(function(resolve, reject){
-    instagram.locations.recent({ location_id: locationId, 
+    instagram.locations.recent({ location_id: locationId, min_timestamp: timeStamp,
       complete: function(data){
         // 'data' is an array of photo-objects for a specific location
         resolve({barName:barName, lat: lat, lng: lng, address: address, data: data});
