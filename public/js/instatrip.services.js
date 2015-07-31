@@ -66,23 +66,24 @@ angular.module('instatrip.services', [])
       };
       directionsService.route(request, function(response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
-          var path = response.routes[0].overview_path;
-          startCoords.location.latitude = path[0].G;
-          startCoords.location.longitude = path[0].K;
-          endCoords.location.latitude = path[path.length-1].G;
-          endCoords.location.longitude = path[path.length-1].K;
-          directionsDisplay.setDirections(response);
+            var path = response.routes[0].overview_path;
+            startCoords.location.latitude = path[0].G;
+            startCoords.location.longitude = path[0].K;
+            endCoords.location.latitude = path[path.length-1].G;
+            endCoords.location.longitude = path[path.length-1].K;
+            directionsDisplay.setDirections(response);
         }
-      var nPts = findN(response.routes[0].overview_path, points);
-      var coords = [];
-      for(var i = 0; i < nPts.length; i++){
-        coords.push({
-          lat: nPts[i].A,
-          lng: nPts[i].F
-        });
-      }
+        console.log('directionsService RESPONSE: ', response.routes[0]);
+        var nPts = findN(response.routes[0].overview_path, points);
+        var coords = [];
+        for(var i = 0; i < nPts.length; i++){
+          coords.push({
+            lat: nPts[i].A,
+            lng: nPts[i].F
+          });
+        }
         currentCoords = coords;
-        // callback(response.routes[0].overview_path, coords);
+          // callback(response.routes[0].overview_path, coords);
       });
     }
 
@@ -150,13 +151,15 @@ angular.module('instatrip.services', [])
         return marker;
       };
 
-      //this readd the start waypoint
+      // this recreates the start waypoint
+      startCoords.barName = 'Start';
       markers.push(makeMarker(startCoords, 'start'));
       for(var i = 0; i < data.length; i++) {
         var newMarker = makeMarker(data[i], i);
         markers.push(newMarker);
       }
-      //this readd the end waypoint
+      // this recreates the end waypoint
+      endCoords.barName = 'End';
       markers.push(makeMarker(endCoords, 'end'));
 
       for(i = 0; i < markers.length; i++) {
