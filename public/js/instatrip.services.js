@@ -138,10 +138,19 @@ angular.module('instatrip.services', [])
           content: contentString
         });
 
+        var icon = {
+          url: 'http://www.charbase.com/images/glyph/127866',
+          scaledSize: new google.maps.Size(50, 50),
+          origin: new google.maps.Point(0,0),
+          anchor: new google.maps.Point(0, 0)
+        };
+
         var marker = new google.maps.Marker({
           position: myLatlng,
           id: id,
-          photos: data.photos
+          photos: data.photos,
+          //icon: 'http://www.charbase.com/images/glyph/127866'
+          icon: icon
           //infoWindow: infoWindow
         });
 
