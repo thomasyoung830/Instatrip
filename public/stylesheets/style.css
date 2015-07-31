@@ -237,13 +237,19 @@ body {
 }
 
 .marker {
-  background-color: #59BCB9;
 }
 
 .marker .marker-title {
   text-align: center;
   background: #fff;
   font-size: 12pt;
+}
+
+.marker .marker-address {
+  width: 250px;
+  background: #fff;
+  text-align: center;
+  resize: both;
 }
 
 .youreDrunk{
