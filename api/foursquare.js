@@ -59,7 +59,6 @@ var get_foursquare_data_for_array_of_points = function(points) {
  * @return {Object[]}     Filtered and sorted results
  */
 var filter_foursquare_data = function(res) {
-  console.log(res);
   var data = res.response.groups[0].items;
 
   data = data.filter(function(obj) {
@@ -95,7 +94,6 @@ var filter_foursquare_data = function(res) {
     });
   }
 
-  console.log(data);
   return data;
 };
 
