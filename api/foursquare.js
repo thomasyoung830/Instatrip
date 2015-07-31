@@ -32,43 +32,6 @@ var get_foursquare_data_for_coord = function(coords) {
       'openNow': 0
     },
     'json': true
-  }).then(function(res) {
-    var data = res.response.groups[0].items;
-
-    data = data.filter(function(obj) {
-      return !(obj.venue.categories[0].id in {
-        '4bf58dd8d48988d1d5941735': 'Hotel Bars',
-        '4bf58dd8d48988d119941735': 'Hookah Bar'
-      });
-    });
-
-    var with_ratings = data.filter(function(obj) {
-      return obj.venue.rating !== undefined;
-    });
-
-    if (with_ratings.length) {
-      data = with_ratings.sort(function(a, b) {
-        if (a.venue.rating > b.venue.rating) {
-          return -1;
-        } else if (a.venue.rating < b.venue.rating) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-    } else {
-      data = data.sort(function(a, b) {
-        if (a.venue.stats.checkinscount > b.venue.stats.checkinscount) {
-          return 1;
-        } else if (a.venue.stats.checkinscount < b.venue.stats.checkinscount) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-    }
-
-    return data;
   });
 };
 
@@ -77,7 +40,7 @@ var get_foursquare_data_for_coord = function(coords) {
  * @param  {Object[]} points
  * @param {Float} points[].lat Latitude
  * @param {Float} points[].lng Longitude
- * @return {Promise.<Array>} Array of {@link module:foursquare~get_foursquare_data_for_coord}
+ * @return {Promise.<Array>} Array of results from [get_foursquare_data_for_coord]{@link module:foursquare~get_foursquare_data_for_coord}
  */
 var get_foursquare_data_for_array_of_points = function(points) {
   var calls = [];
@@ -89,7 +52,99 @@ var get_foursquare_data_for_array_of_points = function(points) {
   return Promise.all(calls);
 };
 
+
+/**
+ * Filters out unwanted bar types and sorts Foursquare results
+ * @param  {Object} res Result from [get_foursquare_data_for_coord]{@link module:foursquare~get_foursquare_data_for_coord}
+ * @return {Object[]}     Filtered and sorted results
+ */
+var filter_foursquare_data = function(res) {
+  console.log(res);
+  var data = res.response.groups[0].items;
+
+  data = data.filter(function(obj) {
+    return !(obj.venue.categories[0].id in {
+      '4bf58dd8d48988d1d5941735': 'Hotel Bars',
+      '4bf58dd8d48988d119941735': 'Hookah Bar'
+    });
+  });
+
+  var with_ratings = data.filter(function(obj) {
+    return obj.venue.rating !== undefined;
+  });
+
+  if (with_ratings.length) {
+    data = with_ratings.sort(function(a, b) {
+      if (a.venue.rating > b.venue.rating) {
+        return -1;
+      } else if (a.venue.rating < b.venue.rating) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  } else {
+    data = data.sort(function(a, b) {
+      if (a.venue.stats.checkinscount > b.venue.stats.checkinscount) {
+        return 1;
+      } else if (a.venue.stats.checkinscount < b.venue.stats.checkinscount) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
+  console.log(data);
+  return data;
+};
+
+
+/**
+ * Choose bars from filtered and sorted results
+ * @param  {Object[]} data Result from [filter_foursquare_data]{@link module:foursquare~filter_foursquare_data}
+ * @returns {Object[]} list - Array of chosen bars
+ * @returns {String} list[].name - Name of venue
+ * @returns {Object} list[].coordinates - Coordinates of venue
+ * @returns {Float} list[].coordinates.lat - Latitude of venue
+ * @returns {Float} list[].coordinates.lng - Longitude of venue
+ * @returns {String} list[].address - Address of venue
+ * @returns {Integer} list[].foursquare_v2_id - Foursquare id of venue
+ */
+var choose_foursquare_venues = function(data) {
+  var venue_ids = {};
+
+  var fourSquareData = data.map(function(venues) {
+    for(var i = 0; i < venues.length; i++) {
+      if (venue_ids[venues[i].venue.id]) {
+        continue;
+      }
+
+      venue_ids[venues[i].venue.id] = true;
+
+      return {
+        'name': venues[i].venue.name,
+        'coordinates': {
+          'lat': venues[i].venue.location.lat,
+          'lng': venues[i].venue.location.lng
+        },
+        'address': venues[i].venue.location.formattedAddress.join(' '),
+        'foursquare_v2_id': venues[i].venue.id
+      };
+    }
+  });
+
+  // Filter out undefined indexes
+  fourSquareData = fourSquareData.filter(function(location){
+    return location !== undefined;
+  });
+
+  return fourSquareData;
+};
+
 module.exports = {
   get_foursquare_data_for_coord: get_foursquare_data_for_coord,
-  get_foursquare_data_for_array_of_points: get_foursquare_data_for_array_of_points
+  get_foursquare_data_for_array_of_points: get_foursquare_data_for_array_of_points,
+  filter_foursquare_data: filter_foursquare_data,
+  choose_foursquare_venues: choose_foursquare_venues
 };
