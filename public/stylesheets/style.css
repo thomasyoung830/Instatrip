@@ -56,15 +56,15 @@ body{
 }
 
 #map-canvas{
-  border-radius: 10px;
-  border: 2px solid #FFFFFF;
+
 }
 
 .insta-pics{
   border-radius: 10px;
-  border: 2px solid #FFFFFF;
-  background-color: #000;
-  max-height: 600px;
+  /*border: 2px solid #FFFFFF;*/
+  background-color: rgba(17, 13, 29, 0.57);
+  max-height: 630px;
+  padding-bottom: 30px;
 }
 
 .simple-form.center{
@@ -130,32 +130,51 @@ body {
     border-style: solid;
 }
 
+.landingButton:hover, .landingButton:active, .landingButton:focus, .landingButton:visited{
+  background-color: #673AB7;
+  border-color: #673AB7;
+  color: #fff;
+}
+
 .map-title {
   font-size: 22px;
   margin: 5px 0px;
+  text-align: right;
 }
 
 .nav-bar{
-  background-color: #333;
+  background-color: #512DA8;
   color: white;
 }
 
 .navContain{
   padding: 10px 15px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .contentContain{
   width: 1200px;
 }
 .img-responsive {
-  margin: 10px 1px 10px 1px;
+  margin: 10px auto;
   border: 1px solid black;
 }
 
 .scrollContain{
   overflow: scroll;
-  max-height: 590px;
+  max-height: 550px;
+}
+
+.instaHeader, .mapHeader{
+  font-size: 24px;
+  color: #fff;
+  padding: 15px 0px;
+}
+
+.gmap{
+  height: 600px;
+  background-color: #512DA8;
+  border-radius: 10px;
 }
 
 .team{
