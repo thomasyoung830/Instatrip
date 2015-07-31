@@ -63,7 +63,7 @@ body{
 .insta-pics{
   border-radius: 10px;
   border: 2px solid #FFFFFF;
-  background-color: #FFFFFF;
+  background-color: #000;
 }
 
 .simple-form.center{
@@ -91,7 +91,7 @@ input{
 }
 
 body {
-  background-image: url('/img/InstaTrip_v1.jpg');
+  /*background-image: url('http://9582d0ff08bb33048637-4563138e2fb250103a6a433e4e8decae.r42.cf1.rackcdn.com/u/Syr-Background-Nightlife-11984416.jpg');*/
   background-position: center 0px;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -128,7 +128,7 @@ body {
   width: 100%;*/
   border-radius: 10px;
   border: 2px solid #FFFFFF;
-  background-color: #008080;
+  background-color: #333;
   color: white;
 }
 
