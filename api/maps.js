@@ -37,7 +37,7 @@ var choose_points = function(route, num_points) {
   var result = [];
 
   // Determine the number of points
-  num_points = num_points || Math.max(1, Math.floor(route.distance.value / 300));
+  num_points = Math.min(num_points, 6) || Math.min(Math.max(1, Math.floor(route.distance.value / 300)), 6);
 
   // Determine the distance between points
   var interval = Math.round(route.distance.value / (num_points + 1));
