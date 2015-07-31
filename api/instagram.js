@@ -1,6 +1,14 @@
 var instagram = require('instagram-node-lib');
-var keys = require('../config.js');
 var Promise = require('bluebird');
+
+var keys = {};
+if (process.env.NODE_ENV === 'production') {
+  keys.INSTAGRAM_ID = process.env.INSTAGRAM_ID;
+  keys.INSTAGRAM_SECRET = process.env.INSTAGRAM_SECRET;
+} else {
+  keys = require('../config.js');
+}
+
 instagram.set('client_id', keys.INSTAGRAM_ID);
 instagram.set('client_secret', keys.INSTAGRAM_SECRET);
 

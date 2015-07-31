@@ -5,7 +5,13 @@
 var Promise = require('bluebird');
 var request = require('request-promise');
 
-var keys = require('../config.js');
+var keys = {};
+if (process.env.NODE_ENV === 'production') {
+  keys.FOURSQUARE_ID = process.env.FOURSQUARE_ID;
+  keys.FOURSQUARE_SECRET = process.env.FOURSQUARE_SECRET;
+} else {
+  keys = require('../config.js');
+}
 
 
 /**

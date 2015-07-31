@@ -4,7 +4,12 @@
 
 var request = require('request-promise');
 
-var keys = require('../config.js');
+var keys = {};
+if (process.env.NODE_ENV === 'production') {
+  keys.MAPS_KEY = process.env.MAPS_KEY;
+} else {
+  keys = require('../config.js');
+}
 
 /**
  * Returns a walking route between two points
