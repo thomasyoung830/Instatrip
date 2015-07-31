@@ -100,7 +100,9 @@ var filter_foursquare_data = function(res) {
 
 /**
  * Choose bars from filtered and sorted results
- * @param  {Object[]} data Result from [filter_foursquare_data]{@link module:foursquare~filter_foursquare_data}
+ * @param  {Object[]} data - Result from [filter_foursquare_data]{@link module:foursquare~filter_foursquare_data}
+ * @param  {Boolean} [always_top=false] - Always return the top sorted results
+ *
  * @returns {Object[]} list - Array of chosen bars
  * @returns {String} list[].name - Name of venue
  * @returns {Object} list[].coordinates - Coordinates of venue
@@ -109,27 +111,30 @@ var filter_foursquare_data = function(res) {
  * @returns {String} list[].address - Address of venue
  * @returns {Integer} list[].foursquare_v2_id - Foursquare id of venue
  */
-var choose_foursquare_venues = function(data) {
+var choose_foursquare_venues = function(data, always_top) {
+  always_top = (always_top === undefined) ? false : always_top;
   var venue_ids = {};
 
   var fourSquareData = data.map(function(venues) {
-    for(var i = 0; i < venues.length; i++) {
-      if (venue_ids[venues[i].venue.id]) {
-        continue;
-      }
+    venues = venues.filter(function(venue) {
+      return !(venue_ids[venue.venue.id]);
+    });
 
-      venue_ids[venues[i].venue.id] = true;
-
-      return {
-        'name': venues[i].venue.name,
-        'coordinates': {
-          'lat': venues[i].venue.location.lat,
-          'lng': venues[i].venue.location.lng
-        },
-        'address': venues[i].venue.location.formattedAddress.join(' '),
-        'foursquare_v2_id': venues[i].venue.id
-      };
+    if (!venues.length) {
+      return undefined;
     }
+
+    var index = (always_top) ? 0 : Math.floor(Math.random() * venues.length);
+
+    return {
+      'name': venues[index].venue.name,
+      'coordinates': {
+        'lat': venues[index].venue.location.lat,
+        'lng': venues[index].venue.location.lng
+      },
+      'address': venues[index].venue.location.formattedAddress.join(' '),
+      'foursquare_v2_id': venues[index].venue.id
+    };
   });
 
   // Filter out undefined indexes
