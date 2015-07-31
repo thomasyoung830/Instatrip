@@ -56,14 +56,15 @@ body{
 }
 
 #map-canvas{
-  border-radius: 10px;
-  border: 2px solid #FFFFFF;
+
 }
 
 .insta-pics{
   border-radius: 10px;
-  border: 2px solid #FFFFFF;
-  background-color: #FFFFFF;
+  /*border: 2px solid #FFFFFF;*/
+  background-color: rgba(17, 13, 29, 0.57);
+  max-height: 630px;
+  padding-bottom: 30px;
 }
 
 .simple-form.center{
@@ -91,7 +92,7 @@ input{
 }
 
 body {
-  background-image: url('/img/InstaTrip_v1.jpg');
+  background-image: url('http://9582d0ff08bb33048637-4563138e2fb250103a6a433e4e8decae.r42.cf1.rackcdn.com/u/Syr-Background-Nightlife-11984416.jpg');
   background-position: center 0px;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -103,38 +104,85 @@ body {
   float: left;
   width: 170px;
   text-align: left;
-  margin: 5px 60px;
+  margin: 5px 20px;
   display: inline;
   font-size: 22px
 }
 
 .home-button {
-  float: left;
+  float: right;
   text-align: left;
-  margin: 2px 00px;
+  margin: 2px 0px;
   display: inline;
+  color: #fff;
+  background-color: #8272CC;
+  border-color: transparent;
+  padding: 6px 22px;
+}
+
+.landingButton{
+  font-size: 16px;
+    padding: 9px 25px;
+    border-radius: 2px;
+    background-color: #512DA8;
+    color: #fff;
+    border-color: #512DA8;
+    /* -webkit-appearance: initial; */
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.2s;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    border-style: solid;
+}
+
+.btn.focus, .btn:focus, .btn:hover {
+    color: #fff;
+    background-color: #5A4AA5;
+    text-decoration: none;
+}
+
+.landingButton:hover, .landingButton:active, .landingButton:focus, .landingButton:visited{
+  background-color: #673AB7;
+  border-color: #673AB7;
+  color: #fff;
 }
 
 .map-title {
-  float: left;
-  text-align: left;
-  margin: 5px 355px;
-  display: inline;
-  font-size: 22px
+  text-align: right;
 }
 
 .nav-bar{
-  /*overflow: auto;
-  width: 100%;*/
-  border-radius: 10px;
-  border: 2px solid #FFFFFF;
-  background-color: #008080;
+  background-color: #512DA8;
   color: white;
 }
 
+.navContain{
+  padding: 10px 15px;
+  margin-bottom: 25px;
+}
+
+.contentContain{
+  width: 1200px;
+}
 .img-responsive {
-  margin: 10px 1px 10px 1px;
+  margin: 10px auto;
   border: 1px solid black;
+}
+
+.scrollContain{
+  overflow: scroll;
+  max-height: 550px;
+}
+
+.instaHeader, .mapHeader{
+  font-size: 24px;
+  color: #fff;
+  padding: 15px 0px;
+}
+
+.gmap{
+  height: 600px;
+  background-color: #512DA8;
+  border-radius: 10px;
 }
 
 .team{
